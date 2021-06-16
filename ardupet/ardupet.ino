@@ -1,18 +1,22 @@
 #include "Monster.h"
 #include <Arduboy2.h>
 Arduboy2 arduboy;
+BeepPin1 beep;
 Monster monster1;
 Monster monster2;
 
 void setup() {
   arduboy.begin();
   arduboy.clear();
+  beep.begin();
+  arduboy.setFrameRate(30);
   monster1 = genMonster();
   monster2 = genMonster();
 }
 
 void loop() {
   arduboy.pollButtons();
+  beep.timer();
   if (arduboy.justPressed(UP_BUTTON)) {
     monster1 = genMonster();
   }
@@ -25,6 +29,9 @@ void loop() {
     if (monster1.hp > 0 && monster2.hp > 0) {
       monster1.hp = monster1.hp - (monster1dmg > 0 ? monster1dmg : 0);
       monster2.hp = monster2.hp - (monster2dmg > 0 ? monster2dmg : 0);
+    }
+    if(monster1.hp <= 0 || monster2.hp <=0){
+      beep.tone(beep.freq(440),15);
     }
   }
   arduboy.clear();
