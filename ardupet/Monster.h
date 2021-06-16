@@ -1,7 +1,7 @@
 #ifndef MONSTER
 #define MONSTER
 
-typedef struct Monster{
+typedef struct Monster {
   char name[40];
   int atk;
   int def;
