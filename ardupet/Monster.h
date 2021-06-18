@@ -7,6 +7,9 @@ typedef struct Monster {
   int def;
   int hp;
   int level;
+  byte img[32];
 };
+
+
 
 #endif
