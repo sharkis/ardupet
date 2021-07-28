@@ -13,9 +13,12 @@ void setup() {
   beep.begin();
   arduboy.setFrameRate(30);
   monster1 = genMonster();
-  
+
   monster2 = genMonster();
 }
+
+const uint8_t PROGMEM charlie[] = {B11110000, B10011000, B11000100, B00111110, B00000011, B00000001, B01011001, B11000001, B01011001, B00000001, B00000011, B00111110, B11000100, B10011000, B11110000,
+                                    0x00,0x00,0x00,0x01,0x02,0x02,0x02,0x02,0x02,0x02,0x02,0x01,0x00,0x00,0x00};
 
 void loop() {
   arduboy.pollButtons();
@@ -33,8 +36,8 @@ void loop() {
       monster1.hp = monster1.hp - (monster1dmg > 0 ? monster1dmg : 0);
       monster2.hp = monster2.hp - (monster2dmg > 0 ? monster2dmg : 0);
     }
-    if(monster1.hp <= 0 || monster2.hp <=0){
-      beep.tone(beep.freq(440),15);
+    if (monster1.hp <= 0 || monster2.hp <= 0) {
+      beep.tone(beep.freq(440), 15);
     }
   }
   arduboy.clear();
@@ -61,12 +64,8 @@ void printInfo(Monster monster1, Monster monster2) {
   arduboy.println(monster1.hp);
   arduboy.print("LV  ");
   arduboy.println(monster1.level);
-  for(int i=0;i<16;i++){
-    for(int k=0;k<8;k++){
-      arduboy.drawPixel(k,40+i,monster1.img[2*i]>>k & 0x01);
-      arduboy.drawPixel(k+8,40+i,monster1.img[(2*i+1)]>>k & 0x01);
-    }
-  }
+  
+  arduboy.drawBitmap(0, 40, charlie, 15, 10, WHITE);
   arduboy.setCursor(64, 0);
   arduboy.print("ATK ");
   arduboy.println(monster2.atk);
@@ -79,12 +78,13 @@ void printInfo(Monster monster1, Monster monster2) {
   arduboy.setCursor(64, 24);
   arduboy.print("LV  ");
   arduboy.println(monster2.level);
-  for(int i=0;i<16;i++){
-    for(int k=0;k<8;k++){
-      arduboy.drawPixel(64+k,40+i,monster2.img[2*i]>>k & 0x01);
-      arduboy.drawPixel(k+72,40+i,monster2.img[(2*i+1)]>>k & 0x01);
+  for (int i = 0; i < 16; i++) {
+    for (int k = 0; k < 8; k++) {
+      arduboy.drawPixel(64 + k, 40 + i, monster2.img[2 * i] >> k & 0x01);
+      arduboy.drawPixel(k + 72, 40 + i, monster2.img[(2 * i + 1)] >> k & 0x01);
     }
   }
+  
 }
 
 Monster genMonster() {
@@ -93,7 +93,7 @@ Monster genMonster() {
   newMonster.def = random(10);
   newMonster.hp = 10;
   newMonster.level = 1;
-  for(int i =0;i<32;i++){
+  for (int i = 0; i < 32; i++) {
     byte line = (byte)random(255);
     Serial.println(line, BIN);
     newMonster.img[i] = line;
